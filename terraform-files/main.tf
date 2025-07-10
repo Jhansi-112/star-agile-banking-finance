@@ -6,7 +6,7 @@ resource "aws_instance" "test-server" {
   connection {
      type = "ssh"
      user = "ec2-user"
-     private_key = file("./var/lib/jenkins/workspace/BankingProject/terraform-files/mykey-project.pem")
+     private_key = file("./var/lib/jenkins/workspace/BankingProject/terraform-files/new-project-key.pem")
      host = self.public_ip
      }
   provisioner "remote-exec" {
