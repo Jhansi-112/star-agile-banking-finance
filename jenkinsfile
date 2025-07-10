@@ -23,7 +23,7 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: false,
-                    reportDir: '/var/lib/jenkins/workspace/BankingProject/target/surefire-reports',
+                    reportDir: '/var/lib/jenkins/workspace/Banking-finance-project/target/surefire-reports',
                     reportFiles: 'index.html',
                     reportName: 'HTML Report',
                     reportTitles: '',
