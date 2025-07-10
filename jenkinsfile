@@ -41,7 +41,7 @@ pipeline {
         stage('Docker-Login') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'Docker-login', passwordVariable: 'dockerpassword', usernameVariable: 'dockerlogin')]) {
-                    sh 'docker login -u ${dockerlogin} -p ${dockerpassword}'
+                    sh 'docker login -u $dockerlogin -p $dockerpassword'
                 }
             }
         }
@@ -56,7 +56,8 @@ pipeline {
             steps {
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS-ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('terraform-files') {
-                        sh "sudo chmod 600 "new-project-key.pem"
+                        // ✅ FIXED: Properly quoted chmod command
+                        sh 'sudo chmod 600 new-project-key.pem'
                         sh 'terraform init'
                         sh 'terraform validate'
                         sh 'terraform apply --auto-approve'
@@ -66,7 +67,3 @@ pipeline {
         }
     }
 }
-
-
-
-
