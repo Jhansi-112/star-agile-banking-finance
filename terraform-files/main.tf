@@ -7,7 +7,7 @@ resource "aws_instance" "test-server" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("${path.module}/new-project-key.pem") # Make sure this file exists in the same folder
+    private_key = file("${path.module}/new-project-key.pem")  # This file must be present in terraform-files directory
     host        = self.public_ip
   }
 
@@ -21,11 +21,14 @@ resource "aws_instance" "test-server" {
     Name = "test-server1"
   }
 
+  # Save EC2 public IP to inventory file
   provisioner "local-exec" {
-    command = "echo ${aws_instance.test-server.public_ip} > inventory"
+    command = "echo ${self.public_ip} > inventory"
   }
 
+  # Run Ansible playbook with proper key and inventory
   provisioner "local-exec" {
-    command = "ansible-playbook /var/lib/jenkins/workspace/Banking-finance-project/terraform-files/ansibleplaybook.yml"
+    command = "ansible-playbook -i inventory ansibleplaybook.yml --private-key=new-project-key.pem"
   }
 }
+
