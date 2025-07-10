@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/rohinicbabu/star-agile-banking-finance.git'
+                git 'https://github.com/Jhansi-112/star-agile-banking-finance.git'
 
                 // Run Maven on a Unix agent.
                 sh "mvn -Dmaven.test.failure.ignore=true clean package"
@@ -24,27 +24,27 @@ pipeline {
             }
        stage('Create Docker Image') {
            steps {
-               sh 'docker build -t cbabu85/banking-project-demo:3.0 .'
+               sh 'docker build -t jhansi977/banking-project-demo:1.0 .'
                     }
                 }
        stage('Docker-Login') {
            steps {
-               withCredentials([usernamePassword(credentialsId: 'Docker-login', passwordVariable: 'dockerpassword', usernameVariable: 'dockerlogin')]) { 
+               withCredentials([usernamePassword(credentialsId: 'Docker-login', passwordVariable: 'dockerpassword', usernameVariable: 'dockerlogin')]) {
                sh 'docker login -u ${dockerlogin} -p ${dockerpassword}'
                                    }
                         }
                 }
        stage('Push-Image') {
            steps {
-               sh 'docker push cbabu85/banking-project-demo:3.0'
+               sh 'docker push jhansi977/banking-project-demo:1.0'
                      }
                 }
        stage('Config & Deployment') {
             steps {
                 
-                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS-ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+               withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS-ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     dir('terraform-files') {
-                    sh 'sudo chmod 600 mykey.pem'
+                    sh 'sudo chmod 600 mykey-project (1).pem'
                     sh 'terraform init'
                     sh 'terraform validate'
                     sh 'terraform apply --auto-approve'
@@ -54,3 +54,6 @@ pipeline {
 }
 }
 }
+
+
+
